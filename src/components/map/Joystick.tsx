@@ -9,7 +9,7 @@ export default function Joystick({ onMove, sensitivity = 0.001 }: JoystickProps)
   const [isDragging, setIsDragging] = useState(false)
   const [position, setPosition] = useState({ x: 0, y: 0 })
   const containerRef = useRef<HTMLDivElement>(null)
-  const animationRef = useRef<number>()
+  const animationRef = useRef<number | null>(null)
   const positionRef = useRef({ x: 0, y: 0 })
 
   const maxDistance = 40 // 조이스틱이 움직일 수 있는 최대 거리
