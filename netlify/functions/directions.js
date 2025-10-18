@@ -47,7 +47,7 @@ exports.handler = async function(event, context) {
       };
     }
 
-    const url = `https://naveropenapi.apigw.ntruss.com/map-direction/v1/driving?start=${start}&goal=${goal}&option=${option}`;
+    const url = `https://maps.apigw.ntruss.com/map-direction/v1/driving?start=${start}&goal=${goal}&option=${option}`;
 
     const response = await fetch(url, {
       headers: {
