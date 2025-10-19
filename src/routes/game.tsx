@@ -143,63 +143,79 @@ const gameStyles: GameStyle[] = [
     ],
   },
   {
-    id: 'fortnite',
-    name: 'Fortnite Style',
-    icon: '🪂',
-    description: 'Vibrant battle royale map',
+    id: 'pubg',
+    name: 'PUBG Style',
+    icon: '🎯',
+    description: 'Battle royale tactical map',
     mapStyles: [
-      { elementType: 'geometry', stylers: [{ color: '#ebe3cd' }] },
-      { elementType: 'labels.text.fill', stylers: [{ color: '#523735' }] },
-      { elementType: 'labels.text.stroke', stylers: [{ color: '#f5f1e6' }] },
+      // 모든 라벨 숨기기
+      { elementType: 'labels', stylers: [{ visibility: 'off' }] },
+
+      // 기본 배경 - 밝은 베이지/모래색
+      { elementType: 'geometry', stylers: [{ color: '#e8dcc5' }] },
+
+      // 자연 지형 - 연한 갈색
       {
-        featureType: 'administrative',
-        elementType: 'geometry.stroke',
-        stylers: [{ color: '#c9b2a6' }],
-      },
-      {
-        featureType: 'landscape.natural',
+        featureType: 'landscape',
         elementType: 'geometry',
-        stylers: [{ color: '#dfd2ae' }],
+        stylers: [{ color: '#d9ceb0' }],
       },
+
+      // 건물 및 인공 구조물 - 회색
+      {
+        featureType: 'landscape.man_made',
+        elementType: 'geometry',
+        stylers: [{ color: '#c4b5a0' }],
+      },
+
+      // POI 숨기기
       {
         featureType: 'poi',
-        elementType: 'geometry',
-        stylers: [{ color: '#dfd2ae' }],
+        stylers: [{ visibility: 'off' }],
       },
+
+      // 공원 - 올리브 그린
       {
         featureType: 'poi.park',
         elementType: 'geometry.fill',
-        stylers: [{ color: '#a5b076' }],
+        stylers: [{ color: '#9ba67a' }, { visibility: 'on' }],
       },
-      {
-        featureType: 'poi.park',
-        elementType: 'labels.text.fill',
-        stylers: [{ color: '#447530' }],
-      },
+
+      // 일반 도로 - 연한 회색
       {
         featureType: 'road',
         elementType: 'geometry',
-        stylers: [{ color: '#f5f1e6' }],
+        stylers: [{ color: '#d4c8b3' }],
       },
+      {
+        featureType: 'road',
+        elementType: 'geometry.stroke',
+        stylers: [{ color: '#b0a490' }],
+      },
+
+      // 고속도로 - 진한 회색
       {
         featureType: 'road.highway',
         elementType: 'geometry',
-        stylers: [{ color: '#f8c967' }],
+        stylers: [{ color: '#b8ac98' }],
       },
       {
         featureType: 'road.highway',
         elementType: 'geometry.stroke',
-        stylers: [{ color: '#e9bc62' }],
+        stylers: [{ color: '#998f7f' }],
       },
+
+      // 대중교통 숨기기
+      {
+        featureType: 'transit',
+        stylers: [{ visibility: 'off' }],
+      },
+
+      // 물 - 푸른 회색
       {
         featureType: 'water',
-        elementType: 'geometry.fill',
-        stylers: [{ color: '#19a0d8' }],
-      },
-      {
-        featureType: 'water',
-        elementType: 'labels.text.fill',
-        stylers: [{ color: '#92998d' }],
+        elementType: 'geometry',
+        stylers: [{ color: '#7a9cb5' }],
       },
     ],
   },
@@ -209,38 +225,77 @@ const gameStyles: GameStyle[] = [
     icon: '⚔️',
     description: 'Fantasy adventure map',
     mapStyles: [
-      { elementType: 'geometry', stylers: [{ color: '#c5e1a5' }] },
-      { elementType: 'labels.text.fill', stylers: [{ color: '#33691e' }] },
-      { elementType: 'labels.text.stroke', stylers: [{ color: '#f1f8e9' }] },
+      // 모든 라벨 숨기기
+      { elementType: 'labels', stylers: [{ visibility: 'off' }] },
+
+      // 기본 배경 - 황토색에 투명도
       {
-        featureType: 'poi',
         elementType: 'geometry',
-        stylers: [{ color: '#aed581' }],
+        stylers: [{ color: '#d4a574' }, { lightness: 20 }]
       },
+
+      // 자연 지형 - 연한 황토색에 약간 투명
       {
-        featureType: 'poi.park',
-        elementType: 'geometry.fill',
-        stylers: [{ color: '#689f38' }],
-      },
-      {
-        featureType: 'road',
+        featureType: 'landscape',
         elementType: 'geometry',
-        stylers: [{ color: '#dce775' }],
+        stylers: [{ color: '#d9b991' }, { lightness: 30 }],
       },
-      {
-        featureType: 'road.highway',
-        elementType: 'geometry',
-        stylers: [{ color: '#afb42b' }],
-      },
-      {
-        featureType: 'water',
-        elementType: 'geometry.fill',
-        stylers: [{ color: '#4fc3f7' }],
-      },
+
+      // 건물 및 인공 구조물 - 투명하게
       {
         featureType: 'landscape.man_made',
         elementType: 'geometry',
-        stylers: [{ color: '#9ccc65' }],
+        stylers: [{ color: '#c9a97a' }, { lightness: 40 }],
+      },
+
+      // POI 숨기기
+      {
+        featureType: 'poi',
+        stylers: [{ visibility: 'off' }],
+      },
+
+      // 공원 - 약간 어두운 황토색
+      {
+        featureType: 'poi.park',
+        elementType: 'geometry.fill',
+        stylers: [{ color: '#b89968' }, { visibility: 'on' }],
+      },
+
+      // 도로 - 밝은 황토색 (불투명하게)
+      {
+        featureType: 'road',
+        elementType: 'geometry',
+        stylers: [{ color: '#e8d4b8' }],
+      },
+      {
+        featureType: 'road',
+        elementType: 'geometry.stroke',
+        stylers: [{ color: '#c4a882' }],
+      },
+
+      // 고속도로 - 더 밝은 황토색
+      {
+        featureType: 'road.highway',
+        elementType: 'geometry',
+        stylers: [{ color: '#f0dfc8' }],
+      },
+      {
+        featureType: 'road.highway',
+        elementType: 'geometry.stroke',
+        stylers: [{ color: '#d4b896' }],
+      },
+
+      // 대중교통 숨기기
+      {
+        featureType: 'transit',
+        stylers: [{ visibility: 'off' }],
+      },
+
+      // 물 - 청록색
+      {
+        featureType: 'water',
+        elementType: 'geometry',
+        stylers: [{ color: '#7eb5a6' }],
       },
     ],
   },
@@ -330,8 +385,21 @@ function GameMap() {
   const [zoom, setZoom] = useState(17) // 기본 줌 레벨 증가
   const [rotation, setRotation] = useState(0) // 캐릭터 회전 각도 (도)
   const [moveSpeed, setMoveSpeed] = useState(0.00001) // 이동 속도
+  const [blueZoneTimer, setBlueZoneTimer] = useState(100) // PUBG 자기장 타이머 (0-100%)
   const minimapRef = useRef<HTMLDivElement>(null)
   const keysPressed = useRef<Set<string>>(new Set())
+
+  // PUBG 자기장 타이머 자동 감소
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setBlueZoneTimer((prev) => {
+        if (prev <= 0) return 100 // 0이 되면 다시 100으로 리셋
+        return prev - 0.5 // 천천히 감소
+      })
+    }, 100) // 100ms마다 업데이트
+
+    return () => clearInterval(interval)
+  }, [])
 
   // 마우스 이동으로 캐릭터 회전 - 간단하게 직접 계산
   useEffect(() => {
@@ -524,59 +592,222 @@ function GameMap() {
             </div>
           )}
 
-          {/* 미니맵 컨테이너 - 보이는 영역만 직사각형 */}
+          {/* 미니맵 컨테이너 - GTA는 직사각형, Minecraft와 Zelda는 원형, PUBG는 정사각형 */}
           <div
             ref={minimapRef}
-            className="relative w-[600px] h-[400px] overflow-hidden"
+            className={`relative overflow-hidden ${
+              selectedGame.id === 'minecraft'
+                ? 'w-[500px] h-[500px] rounded-full border-4 border-blue-400'
+                : selectedGame.id === 'zelda'
+                ? 'w-[500px] h-[500px] rounded-full border-4 border-yellow-600'
+                : selectedGame.id === 'pubg'
+                ? 'w-[500px] h-[500px] border-4 border-gray-700'
+                : 'w-[600px] h-[400px]'
+            }`}
           >
+            {/* PUBG 자기장 타이머 바 - 상단 */}
+            {selectedGame.id === 'pubg' && (
+              <div className="absolute top-0 left-0 right-0 h-6 bg-zinc-900/80 border-b-2 border-gray-700 z-40 flex items-center px-2">
+                <div className="flex-1 h-3 bg-zinc-800 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-gradient-to-r from-blue-600 to-blue-400 transition-all duration-100"
+                    style={{ width: `${blueZoneTimer}%` }}
+                  />
+                </div>
+              </div>
+            )}
+
             {/* 실제 구글 지도 - 더 크게 렌더링하고 가운데 부분만 보이도록 */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px]">
-              <GameMinimap center={center} zoom={zoom} mapStyles={selectedGame.mapStyles} />
+              <GameMinimap center={center} zoom={zoom} mapStyles={selectedGame.mapStyles} gameId={selectedGame.id} />
             </div>
 
-            {/* 중앙 플레이어 마커 - GTA 스타일 화살표 */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none">
-              <div
-                className="relative w-6 h-8"
-                style={{ transform: `rotate(${rotation}deg)` }}
-              >
-                {/* SVG 화살표 아이콘 */}
-                <svg
-                  width="24"
-                  height="32"
-                  viewBox="0 0 24 32"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="drop-shadow-lg"
-                >
-                  {/* 화살표 외곽선 (검정 테두리) */}
-                  <path
-                    d="M12 2 L22 28 L12 24 L2 28 Z"
-                    fill="none"
-                    stroke="#000000"
-                    strokeWidth="3"
-                    strokeLinejoin="miter"
-                  />
-
-                  {/* 왼쪽 절반 - 흰색 */}
-                  <path
-                    d="M12 2 L12 24 L2 28 Z"
-                    fill="#ffffff"
-                    stroke="#ffffff"
-                    strokeWidth="1"
-                    strokeLinejoin="miter"
-                  />
-
-                  {/* 오른쪽 절반 - 약한 회색 */}
-                  <path
-                    d="M12 2 L22 28 L12 24 Z"
-                    fill="#a0a0a0"
-                    stroke="#a0a0a0"
-                    strokeWidth="1"
-                    strokeLinejoin="miter"
-                  />
+            {/* Minecraft 스타일 격자 오버레이 */}
+            {selectedGame.id === 'minecraft' && (
+              <div className="absolute inset-0 pointer-events-none z-20">
+                <svg width="100%" height="100%" className="opacity-30">
+                  <defs>
+                    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#8B4513" strokeWidth="1"/>
+                    </pattern>
+                  </defs>
+                  <rect width="100%" height="100%" fill="url(#grid)" />
                 </svg>
               </div>
+            )}
+
+            {/* PUBG 스타일 격자 오버레이 */}
+            {selectedGame.id === 'pubg' && (
+              <div className="absolute inset-0 pointer-events-none z-20">
+                <svg width="100%" height="100%" className="opacity-20">
+                  <defs>
+                    <pattern id="pubg-grid" width="50" height="50" patternUnits="userSpaceOnUse">
+                      <path d="M 50 0 L 0 0 0 50" fill="none" stroke="#6b7280" strokeWidth="1"/>
+                    </pattern>
+                  </defs>
+                  <rect width="100%" height="100%" fill="url(#pubg-grid)" />
+                </svg>
+              </div>
+            )}
+
+            {/* Zelda 스타일 시야 효과 - 45도 좌우 각도로 그라데이션 */}
+            {selectedGame.id === 'zelda' && (
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-15 pointer-events-none">
+                <div
+                  className="relative"
+                  style={{ transform: `rotate(${rotation}deg)` }}
+                >
+                  <svg
+                    width="500"
+                    height="500"
+                    viewBox="0 0 500 500"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <defs>
+                      <radialGradient id="zelda-vision" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stopColor="rgba(255, 255, 150, 0.4)" />
+                        <stop offset="50%" stopColor="rgba(255, 255, 150, 0.15)" />
+                        <stop offset="100%" stopColor="rgba(255, 255, 150, 0)" />
+                      </radialGradient>
+                    </defs>
+                    {/* 45도 좌우 시야 부채꼴 */}
+                    <path
+                      d="M250 250 L130 0 L370 0 Z"
+                      fill="url(#zelda-vision)"
+                    />
+                  </svg>
+                </div>
+              </div>
+            )}
+
+
+            {/* 중앙 플레이어 마커 - 게임별로 다른 모양 */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 pointer-events-none">
+              <div
+                className="relative"
+                style={{ transform: `rotate(${rotation}deg)` }}
+              >
+                {selectedGame.id === 'gta' ? (
+                  // GTA 스타일 화살표
+                  <svg
+                    width="24"
+                    height="32"
+                    viewBox="0 0 24 32"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="drop-shadow-lg"
+                  >
+                    <path
+                      d="M12 2 L22 28 L12 24 L2 28 Z"
+                      fill="none"
+                      stroke="#000000"
+                      strokeWidth="3"
+                      strokeLinejoin="miter"
+                    />
+                    <path
+                      d="M12 2 L12 24 L2 28 Z"
+                      fill="#ffffff"
+                      stroke="#ffffff"
+                      strokeWidth="1"
+                      strokeLinejoin="miter"
+                    />
+                    <path
+                      d="M12 2 L22 28 L12 24 Z"
+                      fill="#a0a0a0"
+                      stroke="#a0a0a0"
+                      strokeWidth="1"
+                      strokeLinejoin="miter"
+                    />
+                  </svg>
+                ) : selectedGame.id === 'minecraft' ? (
+                  // Minecraft 스타일 물방울 마커
+                  <svg
+                    width="32"
+                    height="40"
+                    viewBox="0 0 32 40"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="drop-shadow-lg"
+                  >
+                    {/* 물방울 외곽 */}
+                    <path
+                      d="M16 2 C16 2, 4 14, 4 24 C4 30, 9 36, 16 36 C23 36, 28 30, 28 24 C28 14, 16 2, 16 2 Z"
+                      fill="#3B82F6"
+                      stroke="#1E40AF"
+                      strokeWidth="2"
+                    />
+                    {/* 내부 원 */}
+                    <circle
+                      cx="16"
+                      cy="22"
+                      r="6"
+                      fill="#60A5FA"
+                      stroke="#1E40AF"
+                      strokeWidth="1.5"
+                    />
+                  </svg>
+                ) : selectedGame.id === 'pubg' ? (
+                  // PUBG 스타일 - 동그라미 + 시야 효과
+                  <svg
+                    width="80"
+                    height="100"
+                    viewBox="0 0 80 100"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="drop-shadow-lg"
+                  >
+                    {/* 시야 효과 (부채꼴 모양) */}
+                    <path
+                      d="M40 40 L15 -20 L65 -20 Z"
+                      fill="rgba(59, 130, 246, 0.2)"
+                      stroke="rgba(59, 130, 246, 0.4)"
+                      strokeWidth="1"
+                    />
+                    {/* 캐릭터 원 */}
+                    <circle
+                      cx="40"
+                      cy="40"
+                      r="8"
+                      fill="#ffffff"
+                      stroke="#1f2937"
+                      strokeWidth="2"
+                    />
+                    {/* 방향 표시 선 */}
+                    <line
+                      x1="40"
+                      y1="40"
+                      x2="40"
+                      y2="25"
+                      stroke="#1f2937"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                ) : selectedGame.id === 'zelda' ? (
+                  // Zelda 스타일 - 노란색 삼각형 (뒤쪽 꼬리가 안쪽으로 들어간 형태)
+                  <svg
+                    width="32"
+                    height="40"
+                    viewBox="0 0 32 40"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="drop-shadow-lg"
+                  >
+                    {/* 삼각형 캐릭터 (앞쪽 뾰족, 뒤쪽 꼬리가 안쪽으로 들어감) */}
+                    <path
+                      d="M16 4 L28 24 L16 20 L4 24 Z"
+                      fill="#fbbf24"
+                    />
+                    {/* 내부 하이라이트 */}
+                    <path
+                      d="M16 8 L24 22 L16 19 L8 22 Z"
+                      fill="#fcd34d"
+                      opacity="0.7"
+                    />
+                  </svg>
+                ) : (
+                  // 기본 마커 (다른 게임용)
+                  <div className="w-4 h-4 bg-red-500 rounded-full border-2 border-white"></div>
+                )}
+              </div>
             </div>
+
           </div>
 
           {/* GTA 스타일 상태바 - 미니맵 바깥 하단 (GTA 스타일일 때만 표시) */}
@@ -590,6 +821,26 @@ function GameMap() {
 
               {/* 스태미나/특수 능력 바 (오른쪽 1/4 - 어두운 노란색) */}
               <div className="w-1/4 h-4 bg-gradient-to-r from-yellow-700 to-yellow-600"/>
+            </div>
+          )}
+
+          {/* Minecraft 스타일 좌표 표시 - 미니맵 바깥 하단 (Minecraft 스타일일 때만 표시) */}
+          {selectedGame.id === 'minecraft' && (
+            <div className="w-[500px] bg-zinc-900/90 border-4 border-blue-400 rounded-lg px-6 py-3">
+              <div className="flex justify-center gap-8 font-mono text-sm">
+                <div className="flex items-center gap-2">
+                  <span className="text-red-400 font-bold">X:</span>
+                  <span className="text-white">{center.lng.toFixed(6)}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-blue-400 font-bold">Z:</span>
+                  <span className="text-white">{center.lat.toFixed(6)}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-green-400 font-bold">Y:</span>
+                  <span className="text-white">{zoom}</span>
+                </div>
+              </div>
             </div>
           )}
         </div>

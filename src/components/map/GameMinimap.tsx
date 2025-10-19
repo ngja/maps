@@ -4,9 +4,13 @@ interface GameMinimapProps {
   center: { lat: number; lng: number }
   zoom: number
   mapStyles: google.maps.MapTypeStyle[]
+  gameId?: string
 }
 
-export default function GameMinimap({ center, zoom, mapStyles }: GameMinimapProps) {
+export default function GameMinimap({ center, zoom, mapStyles, gameId }: GameMinimapProps) {
+  // PUBG 스타일일 때는 위성 이미지 사용
+  const mapTypeId = gameId === 'pubg' ? 'satellite' : 'roadmap'
+
   return (
     <Map
       defaultCenter={center}
@@ -16,7 +20,7 @@ export default function GameMinimap({ center, zoom, mapStyles }: GameMinimapProp
       gestureHandling="greedy"
       disableDefaultUI={true}
       styles={mapStyles}
-      mapTypeId="roadmap"
+      mapTypeId={mapTypeId}
       options={{
         zoomControl: false,
         mapTypeControl: false,
