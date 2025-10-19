@@ -8,8 +8,12 @@ interface GameMinimapProps {
 }
 
 export default function GameMinimap({ center, zoom, mapStyles, gameId }: GameMinimapProps) {
-  // PUBG 스타일일 때는 위성 이미지 사용
-  const mapTypeId = gameId === 'pubg' ? 'satellite' : 'roadmap'
+  // 게임별 지도 타입 설정
+  // PUBG: 위성 이미지, Zelda: 지형(등고선), 나머지: 일반 도로
+  const mapTypeId =
+    gameId === 'pubg' ? 'satellite' :
+    gameId === 'zelda' ? 'terrain' :
+    'roadmap'
 
   return (
     <Map

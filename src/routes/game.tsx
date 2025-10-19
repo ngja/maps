@@ -336,44 +336,82 @@ const gameStyles: GameStyle[] = [
     ],
   },
   {
-    id: 'pokemon',
-    name: 'Pokemon Go',
-    icon: '🔴',
-    description: 'AR game style map',
+    id: 'eldenring',
+    name: 'Elden Ring',
+    icon: '⚜️',
+    description: 'Dark fantasy souls-like map',
     mapStyles: [
-      { elementType: 'geometry', stylers: [{ color: '#f5f5f5' }] },
-      { elementType: 'labels.icon', stylers: [{ visibility: 'off' }] },
-      { elementType: 'labels.text.fill', stylers: [{ color: '#616161' }] },
-      { elementType: 'labels.text.stroke', stylers: [{ color: '#f5f5f5' }] },
+      // 모든 라벨 숨기기
+      { elementType: 'labels', stylers: [{ visibility: 'off' }] },
+
+      // 기본 배경 - 어두운 회갈색 (황량한 느낌)
+      {
+        elementType: 'geometry',
+        stylers: [{ color: '#3d3528' }]
+      },
+
+      // 자연 지형 - 짙은 갈색
+      {
+        featureType: 'landscape',
+        elementType: 'geometry',
+        stylers: [{ color: '#4a4035' }],
+      },
+
+      // 건물 및 인공 구조물 - 더 어두운 회색
+      {
+        featureType: 'landscape.man_made',
+        elementType: 'geometry',
+        stylers: [{ color: '#2d2620' }],
+      },
+
+      // POI 숨기기
       {
         featureType: 'poi',
-        elementType: 'geometry',
-        stylers: [{ color: '#eeeeee' }],
+        stylers: [{ visibility: 'off' }],
       },
+
+      // 공원 - 어두운 올리브/이끼색
       {
         featureType: 'poi.park',
-        elementType: 'geometry',
-        stylers: [{ color: '#4caf50' }],
+        elementType: 'geometry.fill',
+        stylers: [{ color: '#3e4a3d' }, { visibility: 'on' }],
       },
+
+      // 일반 도로 - 어두운 돌길 느낌
       {
         featureType: 'road',
         elementType: 'geometry',
-        stylers: [{ color: '#ffffff' }],
+        stylers: [{ color: '#5a5045' }],
       },
       {
-        featureType: 'road.arterial',
-        elementType: 'labels.text.fill',
-        stylers: [{ color: '#757575' }],
+        featureType: 'road',
+        elementType: 'geometry.stroke',
+        stylers: [{ color: '#2d2620' }],
       },
+
+      // 고속도로 - 약간 밝은 돌길
       {
         featureType: 'road.highway',
         elementType: 'geometry',
-        stylers: [{ color: '#ffeb3b' }],
+        stylers: [{ color: '#6b6052' }],
       },
+      {
+        featureType: 'road.highway',
+        elementType: 'geometry.stroke',
+        stylers: [{ color: '#3d3528' }],
+      },
+
+      // 대중교통 숨기기
+      {
+        featureType: 'transit',
+        stylers: [{ visibility: 'off' }],
+      },
+
+      // 물 - 어두운 짙은 청록색
       {
         featureType: 'water',
         elementType: 'geometry',
-        stylers: [{ color: '#2196f3' }],
+        stylers: [{ color: '#1a2a2e' }],
       },
     ],
   },
@@ -386,6 +424,9 @@ function GameMap() {
   const [rotation, setRotation] = useState(0) // 캐릭터 회전 각도 (도)
   const [moveSpeed, setMoveSpeed] = useState(0.00001) // 이동 속도
   const [blueZoneTimer, setBlueZoneTimer] = useState(100) // PUBG 자기장 타이머 (0-100%)
+  const [temperature, setTemperature] = useState(20) // Zelda 온도 (0-40도)
+  const [soundLevel, setSoundLevel] = useState(30) // Zelda 소리 레벨 (0-100)
+  const [soundWaveAnimation, setSoundWaveAnimation] = useState(0) // 주파수 애니메이션용
   const minimapRef = useRef<HTMLDivElement>(null)
   const keysPressed = useRef<Set<string>>(new Set())
 
@@ -397,6 +438,34 @@ function GameMap() {
         return prev - 0.5 // 천천히 감소
       })
     }, 100) // 100ms마다 업데이트
+
+    return () => clearInterval(interval)
+  }, [])
+
+  // Zelda 온도와 소리 레벨 자동 변화
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTemperature((prev) => {
+        const change = (Math.random() - 0.5) * 2 // -1 ~ +1 랜덤 변화
+        const newTemp = prev + change
+        return Math.max(0, Math.min(40, newTemp)) // 0-40도 범위 제한
+      })
+
+      setSoundLevel((prev) => {
+        const change = (Math.random() - 0.5) * 5 // -2.5 ~ +2.5 랜덤 변화
+        const newLevel = prev + change
+        return Math.max(0, Math.min(100, newLevel)) // 0-100 범위 제한
+      })
+    }, 500) // 500ms마다 업데이트
+
+    return () => clearInterval(interval)
+  }, [])
+
+  // Zelda 주파수 애니메이션
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSoundWaveAnimation((prev) => prev + 1)
+    }, 50) // 50ms마다 애니메이션 프레임 업데이트
 
     return () => clearInterval(interval)
   }, [])
@@ -592,6 +661,73 @@ function GameMap() {
             </div>
           )}
 
+          {/* Zelda 온도 & 소리 인디케이터 - 미니맵 왼쪽 */}
+          {selectedGame.id === 'zelda' && (
+            <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-[90px] flex flex-col gap-3 z-50">
+              {/* 온도 인디케이터 - 원형 게이지 */}
+              <div className="relative w-16 h-16">
+                <svg width="64" height="64" viewBox="0 0 64 64" className="transform -rotate-90">
+                  {/* 배경 원 */}
+                  <circle
+                    cx="32"
+                    cy="32"
+                    r="28"
+                    fill="rgba(120, 53, 15, 0.8)"
+                    stroke="#ca8a04"
+                    strokeWidth="2"
+                  />
+                  {/* 온도 게이지 (원형 프로그레스) */}
+                  <circle
+                    cx="32"
+                    cy="32"
+                    r="24"
+                    fill="none"
+                    stroke={temperature < 15 ? '#60a5fa' : temperature < 30 ? '#fbbf24' : '#ef4444'}
+                    strokeWidth="4"
+                    strokeDasharray={`${(temperature / 40) * 150.8} 150.8`}
+                    strokeLinecap="round"
+                    className="transition-all duration-300"
+                  />
+                </svg>
+                {/* 중앙 온도 텍스트 */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-yellow-100 text-xs font-bold">{temperature.toFixed(0)}°</span>
+                </div>
+              </div>
+
+              {/* 소리 인디케이터 - 원형 주파수 */}
+              <div className="relative w-16 h-16">
+                <svg width="64" height="64" viewBox="0 0 64 64">
+                  {/* 배경 원 */}
+                  <circle
+                    cx="32"
+                    cy="32"
+                    r="28"
+                    fill="rgba(120, 53, 15, 0.8)"
+                    stroke="#ca8a04"
+                    strokeWidth="2"
+                  />
+                  {/* 주파수 바 (5개) */}
+                  {[0, 1, 2, 3, 4].map((i) => {
+                    const barHeight = 8 + (Math.sin(soundWaveAnimation / 10 + i) * soundLevel / 100 * 12)
+                    const x = 16 + i * 8
+                    return (
+                      <rect
+                        key={i}
+                        x={x}
+                        y={32 - barHeight / 2}
+                        width="4"
+                        height={barHeight}
+                        fill={soundLevel > 70 ? '#ef4444' : soundLevel > 40 ? '#fbbf24' : '#22c55e'}
+                        rx="2"
+                      />
+                    )
+                  })}
+                </svg>
+              </div>
+            </div>
+          )}
+
           {/* 미니맵 컨테이너 - GTA는 직사각형, Minecraft와 Zelda는 원형, PUBG는 정사각형 */}
           <div
             ref={minimapRef}
@@ -677,6 +813,66 @@ function GameMap() {
                     />
                   </svg>
                 </div>
+              </div>
+            )}
+
+            {/* Elden Ring 구름 효과 - 랜덤 위치에 미탐험 영역 표시 */}
+            {selectedGame.id === 'eldenring' && (
+              <div className="absolute inset-0 z-20 pointer-events-none">
+                <svg width="100%" height="100%" viewBox="0 0 600 400">
+                  <defs>
+                    {/* 구름 그라데이션 */}
+                    <radialGradient id="cloud1">
+                      <stop offset="0%" stopColor="rgba(45, 38, 32, 0.8)" />
+                      <stop offset="50%" stopColor="rgba(45, 38, 32, 0.5)" />
+                      <stop offset="100%" stopColor="rgba(45, 38, 32, 0)" />
+                    </radialGradient>
+                    <radialGradient id="cloud2">
+                      <stop offset="0%" stopColor="rgba(35, 30, 25, 0.7)" />
+                      <stop offset="50%" stopColor="rgba(35, 30, 25, 0.4)" />
+                      <stop offset="100%" stopColor="rgba(35, 30, 25, 0)" />
+                    </radialGradient>
+                  </defs>
+
+                  {/* 랜덤 구름들 */}
+                  <ellipse cx="120" cy="80" rx="80" ry="60" fill="url(#cloud1)" opacity="0.9" />
+                  <ellipse cx="450" cy="120" rx="100" ry="70" fill="url(#cloud2)" opacity="0.85" />
+                  <ellipse cx="280" cy="280" rx="90" ry="65" fill="url(#cloud1)" opacity="0.8" />
+                  <ellipse cx="500" cy="320" rx="70" ry="50" fill="url(#cloud2)" opacity="0.75" />
+                  <ellipse cx="80" cy="350" rx="85" ry="55" fill="url(#cloud1)" opacity="0.8" />
+                </svg>
+              </div>
+            )}
+
+            {/* Zelda 좌표 표시 - 원형 지도 하단 호를 따라 */}
+            {selectedGame.id === 'zelda' && (
+              <div className="absolute inset-0 z-25 pointer-events-none">
+                <svg width="100%" height="100%" viewBox="0 0 500 500" className="mt-10">
+                  <defs>
+                    {/* 하단 호 경로 정의 - 원 테두리에 가깝게 */}
+                    <path
+                      id="zeldaCoordPath"
+                      d="M 80 390 Q 250 480 420 390"
+                      fill="none"
+                    />
+                  </defs>
+                  {/* 호를 따라 텍스트 배치 */}
+                  <text
+                    fill="#1f2937"
+                    fontSize="16"
+                    fontFamily="monospace"
+                    textAnchor="middle"
+                    opacity="1"
+                    fontWeight="700"
+                    letterSpacing="3"
+                    stroke="#fbbf24"
+                    strokeWidth="0.5"
+                  >
+                    <textPath href="#zeldaCoordPath" startOffset="50%">
+                      {center.lng.toFixed(3)}   •   {center.lat.toFixed(3)}   •   {zoom}
+                    </textPath>
+                  </text>
+                </svg>
               </div>
             )}
 
@@ -799,6 +995,70 @@ function GameMap() {
                       d="M16 8 L24 22 L16 19 L8 22 Z"
                       fill="#fcd34d"
                       opacity="0.7"
+                    />
+                  </svg>
+                ) : selectedGame.id === 'cyberpunk' ? (
+                  // Cyberpunk 스타일 - 파란 형광색 V 모양
+                  <svg
+                    width="32"
+                    height="32"
+                    viewBox="0 0 32 32"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="drop-shadow-[0_0_8px_rgba(0,255,255,0.8)]"
+                  >
+                    {/* V 모양 (꼭지점이 위쪽, 마우스 방향) */}
+                    <path
+                      d="M16 4 L24 20 L16 16 L8 20 Z"
+                      fill="#00ffff"
+                      stroke="#00ffff"
+                      strokeWidth="1"
+                    />
+                    {/* 내부 글로우 효과 */}
+                    <path
+                      d="M16 6 L22 18 L16 15 L10 18 Z"
+                      fill="#00ccff"
+                      opacity="0.8"
+                    />
+                  </svg>
+                ) : selectedGame.id === 'eldenring' ? (
+                  // Elden Ring 스타일 - 황금색 은총의 인도 마커
+                  <svg
+                    width="40"
+                    height="48"
+                    viewBox="0 0 40 48"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="drop-shadow-[0_0_12px_rgba(218,165,32,0.9)]"
+                  >
+                    {/* 외부 십자 광채 */}
+                    <line x1="20" y1="8" x2="20" y2="2" stroke="#daa520" strokeWidth="2" opacity="0.6" />
+                    <line x1="20" y1="20" x2="20" y2="32" stroke="#daa520" strokeWidth="2" opacity="0.6" />
+                    <line x1="14" y1="14" x2="26" y2="14" stroke="#daa520" strokeWidth="2" opacity="0.6" />
+
+                    {/* 중앙 다이아몬드 (은총의 인도) */}
+                    <path
+                      d="M20 6 L28 16 L20 26 L12 16 Z"
+                      fill="#ffd700"
+                      stroke="#daa520"
+                      strokeWidth="2"
+                    />
+
+                    {/* 내부 빛나는 코어 */}
+                    <path
+                      d="M20 10 L24 16 L20 22 L16 16 Z"
+                      fill="#fff9e6"
+                      opacity="0.9"
+                    />
+
+                    {/* 방향 표시 화살표 */}
+                    <path
+                      d="M20 26 L20 36"
+                      stroke="#daa520"
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                    />
+                    <path
+                      d="M20 36 L16 30 L20 32 L24 30 Z"
+                      fill="#daa520"
                     />
                   </svg>
                 ) : (
