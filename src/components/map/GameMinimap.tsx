@@ -25,16 +25,14 @@ export default function GameMinimap({ center, zoom, mapStyles, gameId }: GameMin
       disableDefaultUI={true}
       styles={mapStyles}
       mapTypeId={mapTypeId}
-      options={{
-        zoomControl: false,
-        mapTypeControl: false,
-        scaleControl: false,
-        streetViewControl: false,
-        rotateControl: false,
-        fullscreenControl: false,
-        clickableIcons: false,
-        keyboardShortcuts: false,
-      }}
+      zoomControl={false}
+      mapTypeControl={false}
+      scaleControl={false}
+      streetViewControl={false}
+      rotateControl={false}
+      fullscreenControl={false}
+      clickableIcons={false}
+      keyboardShortcuts={false}
     />
   )
 }
