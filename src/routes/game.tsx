@@ -441,7 +441,7 @@ function GameMap() {
   }, [rotation, moveSpeed])
 
   return (
-    <div className="w-full h-screen pt-16 flex flex-col bg-black">
+    <div className="w-full h-screen pt-16 flex flex-col bg-zinc-950">
       {/* 게임 선택 영역 */}
       <div className="flex-shrink-0 bg-zinc-900 shadow-xl border-b border-zinc-800">
         <div className="max-w-7xl mx-auto px-6 py-6">
@@ -514,7 +514,16 @@ function GameMap() {
 
       {/* 미니맵 영역 */}
       <div className="flex-1 flex items-center justify-center p-8">
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 relative">
+          {/* 북쪽 마커 (GTA 스타일일 때만 표시) - 미니맵 컨테이너 밖에 위치 */}
+          {selectedGame.id === 'gta' && (
+            <div className="absolute -top-5 left-1/2 -translate-x-1/2 z-50 pointer-events-none">
+              <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
+                <span className="text-white font-bold text-ㅡㅇ">N</span>
+              </div>
+            </div>
+          )}
+
           {/* 미니맵 컨테이너 - 보이는 영역만 직사각형 */}
           <div
             ref={minimapRef}
@@ -570,17 +579,19 @@ function GameMap() {
             </div>
           </div>
 
-          {/* GTA 스타일 상태바 - 미니맵 바깥 하단 */}
-          <div className="w-[600px] flex gap-2">
-            {/* 체력 바 (왼쪽 1/2 - 초록색) */}
-            <div className="w-1/2 h-4 bg-gradient-to-r from-green-700 to-green-600"/>
+          {/* GTA 스타일 상태바 - 미니맵 바깥 하단 (GTA 스타일일 때만 표시) */}
+          {selectedGame.id === 'gta' && (
+            <div className="w-[600px] flex gap-2">
+              {/* 체력 바 (왼쪽 1/2 - 어두운 초록색) */}
+              <div className="w-1/2 h-4 bg-gradient-to-r from-green-800 to-green-700"/>
 
-            {/* 방탄복/방어력 바 (오른쪽 1/4 - 파란색) */}
-            <div className="w-1/4 h-4 bg-gradient-to-r from-blue-700 to-blue-600"/>
+              {/* 방탄복/방어력 바 (오른쪽 1/4 - 어두운 파란색) */}
+              <div className="w-1/4 h-4 bg-gradient-to-r from-blue-800 to-blue-700"/>
 
-            {/* 스태미나/특수 능력 바 (오른쪽 1/4 - 노란색) */}
-            <div className="w-1/4 h-4 bg-gradient-to-r from-yellow-700 to-yellow-600"/>
-          </div>
+              {/* 스태미나/특수 능력 바 (오른쪽 1/4 - 어두운 노란색) */}
+              <div className="w-1/4 h-4 bg-gradient-to-r from-yellow-700 to-yellow-600"/>
+            </div>
+          )}
         </div>
       </div>
 
