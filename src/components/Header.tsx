@@ -1,7 +1,7 @@
 import { Link } from '@tanstack/react-router'
 
 import { useState } from 'react'
-import { Home, Menu, X, MapPin, Search, Bookmark, Settings, Map as MapIcon, Navigation } from 'lucide-react'
+import { Home, Menu, X, MapPin, Search, Bookmark, Settings, Map as MapIcon, Navigation, Gamepad2 } from 'lucide-react'
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false)
@@ -103,6 +103,18 @@ export default function Header() {
             >
               <Navigation size={20} />
               <span>Movement Simulation</span>
+            </Link>
+            <Link
+              to="/game"
+              onClick={() => setIsOpen(false)}
+              className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 transition-colors text-gray-700"
+              activeProps={{
+                className:
+                  'flex items-center gap-3 px-4 py-3 rounded-lg bg-blue-50 text-blue-600 font-medium transition-colors',
+              }}
+            >
+              <Gamepad2 size={20} />
+              <span>Game Minimap</span>
             </Link>
             {/* Demo Links End */}
           </div>
