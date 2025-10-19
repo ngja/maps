@@ -22,102 +22,84 @@ const gameStyles: GameStyle[] = [
     icon: '🎮',
     description: 'Grand Theft Auto inspired minimap',
     mapStyles: [
-      { elementType: 'geometry', stylers: [{ color: '#1d2c4d' }] },
-      { elementType: 'labels.text.fill', stylers: [{ color: '#8ec3b9' }] },
-      { elementType: 'labels.text.stroke', stylers: [{ color: '#1a3646' }] },
+      // 모든 라벨과 아이콘 완전히 숨기기
+      { elementType: 'labels', stylers: [{ visibility: 'off' }] },
+      { elementType: 'labels.text', stylers: [{ visibility: 'off' }] },
+      { elementType: 'labels.text.fill', stylers: [{ visibility: 'off' }] },
+      { elementType: 'labels.text.stroke', stylers: [{ visibility: 'off' }] },
+      { elementType: 'labels.icon', stylers: [{ visibility: 'off' }] },
+
+      // 흑백 스타일 - 기본 배경
+      { elementType: 'geometry', stylers: [{ color: '#2b2b2b' }] },
+
+      // 행정구역 숨기기
       {
         featureType: 'administrative',
-        elementType: 'geometry',
         stylers: [{ visibility: 'off' }],
       },
+
+      // 자연 지형 - 진한 회색
       {
-        featureType: 'administrative.country',
-        elementType: 'geometry.stroke',
-        stylers: [{ color: '#4b6878' }],
+        featureType: 'landscape',
+        elementType: 'geometry',
+        stylers: [{ color: '#1a1a1a' }],
       },
+
+      // 건물 및 인공 구조물 - 중간 회색
       {
         featureType: 'landscape.man_made',
-        elementType: 'geometry.stroke',
-        stylers: [{ color: '#334e87' }],
-      },
-      {
-        featureType: 'landscape.natural',
         elementType: 'geometry',
-        stylers: [{ color: '#023e58' }],
+        stylers: [{ color: '#252525' }],
       },
+
+      // POI 숨기기
       {
         featureType: 'poi',
-        elementType: 'geometry',
-        stylers: [{ color: '#283d6a' }],
-      },
-      {
-        featureType: 'poi',
-        elementType: 'labels.text',
         stylers: [{ visibility: 'off' }],
       },
+
+      // 공원 - 약간 밝은 회색으로 구분
       {
         featureType: 'poi.park',
         elementType: 'geometry.fill',
-        stylers: [{ color: '#023e58' }],
+        stylers: [{ color: '#2e2e2e' }, { visibility: 'on' }],
       },
-      {
-        featureType: 'poi.park',
-        elementType: 'labels.text.fill',
-        stylers: [{ color: '#3C7680' }],
-      },
+
+      // 일반 도로 - 밝은 회색
       {
         featureType: 'road',
         elementType: 'geometry',
-        stylers: [{ color: '#304a7d' }],
+        stylers: [{ color: '#3d3d3d' }],
       },
       {
         featureType: 'road',
-        elementType: 'labels.icon',
-        stylers: [{ visibility: 'off' }],
+        elementType: 'geometry.stroke',
+        stylers: [{ color: '#1f1f1f' }],
       },
-      {
-        featureType: 'road',
-        elementType: 'labels.text.fill',
-        stylers: [{ color: '#98a5be' }],
-      },
-      {
-        featureType: 'road',
-        elementType: 'labels.text.stroke',
-        stylers: [{ color: '#1d2c4d' }],
-      },
+
+      // 고속도로 - 가장 밝은 회색
       {
         featureType: 'road.highway',
         elementType: 'geometry',
-        stylers: [{ color: '#2c6675' }],
+        stylers: [{ color: '#4a4a4a' }],
       },
       {
         featureType: 'road.highway',
         elementType: 'geometry.stroke',
-        stylers: [{ color: '#255763' }],
+        stylers: [{ color: '#2a2a2a' }],
       },
-      {
-        featureType: 'road.highway',
-        elementType: 'labels.text.fill',
-        stylers: [{ color: '#b0d5ce' }],
-      },
-      {
-        featureType: 'road.highway',
-        elementType: 'labels.text.stroke',
-        stylers: [{ color: '#023e58' }],
-      },
+
+      // 대중교통 숨기기
       {
         featureType: 'transit',
         stylers: [{ visibility: 'off' }],
       },
+
+      // 물 - 검은색
       {
         featureType: 'water',
         elementType: 'geometry',
-        stylers: [{ color: '#0e1626' }],
-      },
-      {
-        featureType: 'water',
-        elementType: 'labels.text.fill',
-        stylers: [{ color: '#4e6d70' }],
+        stylers: [{ color: '#0a0a0a' }],
       },
     ],
   },
@@ -345,9 +327,9 @@ const gameStyles: GameStyle[] = [
 function GameMap() {
   const [selectedGame, setSelectedGame] = useState<GameStyle>(gameStyles[0])
   const [center, setCenter] = useState({ lat: 37.5665, lng: 126.978 }) // 서울 시청
-  const [zoom] = useState(15)
+  const [zoom, setZoom] = useState(17) // 기본 줌 레벨 증가
   const [rotation, setRotation] = useState(0) // 캐릭터 회전 각도 (도)
-  const [moveSpeed, setMoveSpeed] = useState(0.0001) // 이동 속도
+  const [moveSpeed, setMoveSpeed] = useState(0.00001) // 이동 속도
   const minimapRef = useRef<HTMLDivElement>(null)
   const keysPressed = useRef<Set<string>>(new Set())
 
@@ -466,21 +448,47 @@ function GameMap() {
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-white text-lg font-bold">Choose Game Style</h2>
 
-            {/* 이동 속도 조절 */}
-            <div className="flex items-center gap-4 bg-gray-700 px-4 py-2 rounded-lg">
-              <label className="text-white text-sm font-medium">Move Speed:</label>
-              <input
-                type="range"
-                min="0.00001"
-                max="0.0005"
-                step="0.00001"
-                value={moveSpeed}
-                onChange={(e) => setMoveSpeed(parseFloat(e.target.value))}
-                className="w-32 h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer accent-blue-500"
-              />
-              <span className="text-gray-300 text-xs font-mono w-16">
-                {(moveSpeed * 10000).toFixed(1)}x
-              </span>
+            <div className="flex items-center gap-4">
+              {/* 줌 레벨 조절 */}
+              <div className="flex items-center gap-4 bg-gray-700 px-4 py-2 rounded-lg">
+                <label className="text-white text-sm font-medium">Zoom:</label>
+                <button
+                  onClick={() => setZoom((prev) => Math.max(prev - 1, 1))}
+                  className="w-6 h-6 bg-gray-600 hover:bg-gray-500 text-white rounded flex items-center justify-center transition-colors"
+                  aria-label="Zoom out"
+                >
+                  <svg width="12" height="12" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 8H13" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                  </svg>
+                </button>
+                <span className="text-white text-sm font-mono w-8 text-center">{zoom}</span>
+                <button
+                  onClick={() => setZoom((prev) => Math.min(prev + 1, 20))}
+                  className="w-6 h-6 bg-gray-600 hover:bg-gray-500 text-white rounded flex items-center justify-center transition-colors"
+                  aria-label="Zoom in"
+                >
+                  <svg width="12" height="12" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 3V13M3 8H13" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                  </svg>
+                </button>
+              </div>
+
+              {/* 이동 속도 조절 */}
+              <div className="flex items-center gap-4 bg-gray-700 px-4 py-2 rounded-lg">
+                <label className="text-white text-sm font-medium">Move Speed:</label>
+                <input
+                  type="range"
+                  min="0.000001"
+                  max="0.00005"
+                  step="0.000001"
+                  value={moveSpeed}
+                  onChange={(e) => setMoveSpeed(parseFloat(e.target.value))}
+                  className="w-32 h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer accent-blue-500"
+                />
+                <span className="text-gray-300 text-xs font-mono w-16">
+                  {(moveSpeed * 10000).toFixed(1)}x
+                </span>
+              </div>
             </div>
           </div>
 
@@ -507,68 +515,57 @@ function GameMap() {
       {/* 미니맵 영역 */}
       <div className="flex-1 flex items-center justify-center p-8">
         <div className="relative">
-          {/* 미니맵 타이틀 */}
-          <div className="absolute -top-12 left-0 right-0 flex items-center justify-center gap-3 z-10">
-            <div className="text-4xl">{selectedGame.icon}</div>
-            <h3 className="text-white text-2xl font-bold drop-shadow-lg">
-              {selectedGame.name}
-            </h3>
-          </div>
-
-          {/* 미니맵 컨테이너 */}
-          <div className="relative">
-            {/* 미니맵 외곽 프레임 */}
-            <div className="absolute -inset-4 bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900 rounded-2xl shadow-2xl"></div>
-            <div className="absolute -inset-3 bg-gradient-to-br from-gray-600 to-gray-800 rounded-xl opacity-50"></div>
-
-            {/* 미니맵 */}
-            <div
-              ref={minimapRef}
-              className="relative w-[600px] h-[600px] rounded-lg overflow-hidden shadow-2xl border-4 border-gray-700"
-            >
+          {/* 미니맵 컨테이너 - 보이는 영역만 직사각형 */}
+          <div
+            ref={minimapRef}
+            className="relative w-[600px] h-[400px] overflow-hidden"
+          >
+            {/* 실제 구글 지도 - 더 크게 렌더링하고 가운데 부분만 보이도록 */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px]">
               <GameMinimap center={center} zoom={zoom} mapStyles={selectedGame.mapStyles} />
+            </div>
 
-              {/* 중앙 플레이어 마커 */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none">
-                <div
-                  className="relative"
-                  style={{ transform: `rotate(${rotation}deg)` }}
+            {/* 중앙 플레이어 마커 - GTA 스타일 화살표 */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none">
+              <div
+                className="relative w-6 h-8"
+                style={{ transform: `rotate(${rotation}deg)` }}
+              >
+                {/* SVG 화살표 아이콘 */}
+                <svg
+                  width="24"
+                  height="32"
+                  viewBox="0 0 24 32"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="drop-shadow-lg"
                 >
-                  {/* 외곽 펄스 효과 */}
-                  <div className="absolute inset-0 bg-blue-500 rounded-full animate-ping opacity-75"></div>
-                  {/* 메인 마커 */}
-                  <div className="relative w-8 h-8 bg-blue-500 rounded-full border-4 border-white shadow-lg flex items-center justify-center">
-                    <div className="w-2 h-2 bg-white rounded-full"></div>
-                  </div>
-                  {/* 방향 표시 화살표 */}
-                  <div className="absolute -top-6 left-1/2 -translate-x-1/2">
-                    <div className="w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-b-[12px] border-b-blue-500 drop-shadow-lg"></div>
-                  </div>
-                </div>
-              </div>
+                  {/* 화살표 외곽선 (검정 테두리) */}
+                  <path
+                    d="M12 2 L22 28 L12 24 L2 28 Z"
+                    fill="none"
+                    stroke="#000000"
+                    strokeWidth="3"
+                    strokeLinejoin="miter"
+                  />
 
-              {/* 미니맵 오버레이 UI */}
-              <div className="absolute top-4 right-4 bg-black/70 px-3 py-2 rounded-lg">
-                <div className="text-white text-xs font-mono">
-                  <div>LAT: {center.lat.toFixed(4)}</div>
-                  <div>LNG: {center.lng.toFixed(4)}</div>
-                  <div>ZOOM: {zoom}</div>
-                  <div>ROT: {rotation.toFixed(1)}°</div>
-                </div>
-              </div>
+                  {/* 왼쪽 절반 - 흰색 */}
+                  <path
+                    d="M12 2 L12 24 L2 28 Z"
+                    fill="#ffffff"
+                    stroke="#ffffff"
+                    strokeWidth="1"
+                    strokeLinejoin="miter"
+                  />
 
-              {/* 조작 가이드 */}
-              <div className="absolute bottom-4 right-4 bg-black/70 px-3 py-2 rounded-lg">
-                <div className="text-white text-xs font-mono space-y-1">
-                  <div className="font-bold mb-2">Controls:</div>
-                  <div>🖱️ Mouse: Rotate</div>
-                  <div>⌨️ WASD: Move</div>
-                </div>
-              </div>
-
-              {/* 미니맵 스케일 */}
-              <div className="absolute bottom-4 left-4 bg-black/70 px-3 py-1 rounded text-white text-xs font-mono">
-                100m
+                  {/* 오른쪽 절반 - 약한 회색 */}
+                  <path
+                    d="M12 2 L22 28 L12 24 Z"
+                    fill="#a0a0a0"
+                    stroke="#a0a0a0"
+                    strokeWidth="1"
+                    strokeLinejoin="miter"
+                  />
+                </svg>
               </div>
             </div>
           </div>

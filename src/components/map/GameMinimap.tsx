@@ -25,6 +25,7 @@ export default function GameMinimap({ center, zoom, mapStyles }: GameMinimapProp
         rotateControl: false,
         fullscreenControl: false,
         clickableIcons: false,
+        keyboardShortcuts: false,
       }}
     />
   )
