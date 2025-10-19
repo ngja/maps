@@ -441,20 +441,20 @@ function GameMap() {
   }, [rotation, moveSpeed])
 
   return (
-    <div className="w-full h-screen pt-16 flex flex-col bg-gray-900">
+    <div className="w-full h-screen pt-16 flex flex-col bg-black">
       {/* 게임 선택 영역 */}
-      <div className="flex-shrink-0 bg-gray-800 shadow-xl border-b border-gray-700">
+      <div className="flex-shrink-0 bg-zinc-900 shadow-xl border-b border-zinc-800">
         <div className="max-w-7xl mx-auto px-6 py-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-white text-lg font-bold">Choose Game Style</h2>
 
             <div className="flex items-center gap-4">
               {/* 줌 레벨 조절 */}
-              <div className="flex items-center gap-4 bg-gray-700 px-4 py-2 rounded-lg">
+              <div className="flex items-center gap-4 bg-zinc-800 px-4 py-2 rounded-lg">
                 <label className="text-white text-sm font-medium">Zoom:</label>
                 <button
                   onClick={() => setZoom((prev) => Math.max(prev - 1, 1))}
-                  className="w-6 h-6 bg-gray-600 hover:bg-gray-500 text-white rounded flex items-center justify-center transition-colors"
+                  className="w-6 h-6 bg-zinc-700 hover:bg-zinc-600 text-white rounded flex items-center justify-center transition-colors"
                   aria-label="Zoom out"
                 >
                   <svg width="12" height="12" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -464,7 +464,7 @@ function GameMap() {
                 <span className="text-white text-sm font-mono w-8 text-center">{zoom}</span>
                 <button
                   onClick={() => setZoom((prev) => Math.min(prev + 1, 20))}
-                  className="w-6 h-6 bg-gray-600 hover:bg-gray-500 text-white rounded flex items-center justify-center transition-colors"
+                  className="w-6 h-6 bg-zinc-700 hover:bg-zinc-600 text-white rounded flex items-center justify-center transition-colors"
                   aria-label="Zoom in"
                 >
                   <svg width="12" height="12" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -474,7 +474,7 @@ function GameMap() {
               </div>
 
               {/* 이동 속도 조절 */}
-              <div className="flex items-center gap-4 bg-gray-700 px-4 py-2 rounded-lg">
+              <div className="flex items-center gap-4 bg-zinc-800 px-4 py-2 rounded-lg">
                 <label className="text-white text-sm font-medium">Move Speed:</label>
                 <input
                   type="range"
@@ -483,7 +483,7 @@ function GameMap() {
                   step="0.000001"
                   value={moveSpeed}
                   onChange={(e) => setMoveSpeed(parseFloat(e.target.value))}
-                  className="w-32 h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer accent-blue-500"
+                  className="w-32 h-2 bg-zinc-700 rounded-lg appearance-none cursor-pointer accent-blue-500"
                 />
                 <span className="text-gray-300 text-xs font-mono w-16">
                   {(moveSpeed * 10000).toFixed(1)}x
@@ -500,7 +500,7 @@ function GameMap() {
                 className={`p-4 rounded-lg border-2 transition-all duration-200 ${
                   selectedGame.id === game.id
                     ? 'border-blue-500 bg-blue-500/20 shadow-lg shadow-blue-500/50'
-                    : 'border-gray-600 bg-gray-700 hover:border-gray-500 hover:bg-gray-650'
+                    : 'border-zinc-700 bg-zinc-800 hover:border-zinc-600 hover:bg-zinc-750'
                 }`}
               >
                 <div className="text-3xl mb-2">{game.icon}</div>
@@ -585,8 +585,8 @@ function GameMap() {
       </div>
 
       {/* 하단 정보 */}
-      <div className="flex-shrink-0 bg-gray-800 border-t border-gray-700 px-6 py-4">
-        <div className="max-w-7xl mx-auto text-center text-gray-400 text-sm">
+      <div className="flex-shrink-0 bg-zinc-900 border-t border-zinc-800 px-6 py-4">
+        <div className="max-w-7xl mx-auto text-center text-gray-500 text-sm">
           Interactive game-style minimap • Move your mouse to rotate • Use WASD to move around the real world
         </div>
       </div>
