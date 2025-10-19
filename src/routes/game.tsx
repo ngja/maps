@@ -514,7 +514,7 @@ function GameMap() {
 
       {/* 미니맵 영역 */}
       <div className="flex-1 flex items-center justify-center p-8">
-        <div className="relative">
+        <div className="flex flex-col gap-2">
           {/* 미니맵 컨테이너 - 보이는 영역만 직사각형 */}
           <div
             ref={minimapRef}
@@ -568,6 +568,18 @@ function GameMap() {
                 </svg>
               </div>
             </div>
+          </div>
+
+          {/* GTA 스타일 상태바 - 미니맵 바깥 하단 */}
+          <div className="w-[600px] flex gap-2">
+            {/* 체력 바 (왼쪽 1/2 - 초록색) */}
+            <div className="w-1/2 h-4 bg-gradient-to-r from-green-700 to-green-600"/>
+
+            {/* 방탄복/방어력 바 (오른쪽 1/4 - 파란색) */}
+            <div className="w-1/4 h-4 bg-gradient-to-r from-blue-700 to-blue-600"/>
+
+            {/* 스태미나/특수 능력 바 (오른쪽 1/4 - 노란색) */}
+            <div className="w-1/4 h-4 bg-gradient-to-r from-yellow-700 to-yellow-600"/>
           </div>
         </div>
       </div>
